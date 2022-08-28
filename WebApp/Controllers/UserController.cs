@@ -1,8 +1,10 @@
 ﻿using Business.Users.Services;
 using Core.Contracts;
 using Core.Models;
+using DataAccess.Users.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Controllers
 {
@@ -11,16 +13,77 @@ namespace WebApp.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly ILogger<UserRepository> _logger;
+
+        public UserController(IUserService userService, ILogger<UserRepository> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]
 
-        public IEnumerable<UserForList> Users()
+        public ActionResult<IEnumerable<UserForList>> Users([Range(0,int.MaxValue)]int offset = 1, [Range(1,100)]int limit=3)
         {
-            return _userService.GetAll();
+           // _logger.LogInformation("Getting users with offset={offset} and limit={limit}",offset,limit);
+            return Ok(_userService.GetAll(offset,limit));
+        }
+
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<ActionResult<UserForList>> GetUserById([Required]int userId)
+        {
+            var user= await _userService.GetById(userId);
+
+            if(user == null)
+            {
+                _logger.LogWarning("Cannot find the user with id {userId}", userId);
+                return NotFound(); 
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPost]
+
+        public async Task<ActionResult<UserForList>> CreateUser([Required] [FromForm] string name)
+        {
+            var createdUser = await _userService.CreateUser(name);
+            return Ok(createdUser); 
+        }
+
+        [HttpPatch]
+        [Route("{userId}")]
+
+        public async Task<ActionResult<UserForList>> ModifyUser(
+             [Required][FromRoute] int userId,
+             [Required][FromForm] string name)
+        {
+           var existingUser=await _userService.GetById(userId);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+           var modifiedUSer=await _userService.ModifyUser(userId, name);
+
+           return Ok(modifiedUSer);
+        }
+
+        [HttpDelete]
+        [Route("{userId}")]
+
+        public async Task<ActionResult<UserForList>> DeleteUser([Required][FromRoute] int userId)
+        {
+            var existingUser=await _userService.GetById(userId);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            await _userService.DeleteUser(userId);
+
+            return NoContent();
+
         }
     }
 }

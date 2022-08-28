@@ -30,7 +30,7 @@ namespace DataAccess.Announcement.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Ad> GetAll()
+        public IEnumerable<Ad> GetAll(int offset, int limit)
         {
             throw new NotImplementedException();
         }

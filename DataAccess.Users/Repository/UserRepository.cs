@@ -1,6 +1,7 @@
 ﻿using Core.Repositories;
 using DataAccess.Database.Context;
 using DataAccess.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Users.Repository
 {
@@ -12,19 +13,21 @@ namespace DataAccess.Users.Repository
         {
             _olxContext=olxContext;
         }
-        public User Add(User element)
+        public async  Task<User> Add(User element)
         {
-            throw new NotImplementedException();
+            _olxContext.Users.Add(element);
+           await _olxContext.SaveChangesAsync();
+            return element; 
         }
 
-        public bool Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<User> FindById(int id)
-        {
-            throw new NotImplementedException();
+            var user =await _olxContext.Users.FindAsync(id);
+            if(user != null)
+            {
+                _olxContext.Users.Remove(user);
+                await _olxContext.SaveChangesAsync();
+            }
         }
 
         public IEnumerable<User> FindByName(string name)
@@ -37,14 +40,21 @@ namespace DataAccess.Users.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<User> GetAll(int offset, int limit)
         {
-            return _olxContext.Users;
+            return _olxContext.Users.Skip(offset).Take(limit);
         }
 
-        public User Update(User element)
+        public async Task<User> Update(User element)
         {
-            throw new NotImplementedException();
+            _olxContext.Entry(element).State=EntityState.Modified;
+            await _olxContext.SaveChangesAsync();
+            return element;
+        }
+
+        public async Task<User?>FindById(int id)
+        {
+            return await _olxContext.FindAsync<User>(id);
         }
     }
 }

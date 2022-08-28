@@ -3,12 +3,13 @@
     public interface IRepository<T>
     {
         T Get();
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(int offset,int limit);
         IEnumerable<T> FindByName(string name);
-        IEnumerable<T> FindById(int id);
-        T Add(T element);
-        T Update(T element);
-        bool Delete(int id);
+        Task<T?> FindById(int id);
+        Task<T> Add(T element);
+        Task<T> Update(T element);
+        Task Delete(int id);
 
     }
 }
+ 
