@@ -1,8 +1,6 @@
-﻿using Business.Users.Services;
-using Core.Contracts;
+﻿using Core.Contracts;
 using Core.Models;
 using DataAccess.Users.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,23 +20,22 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-
-        public ActionResult<IEnumerable<UserForList>> Users([Range(0,int.MaxValue)]int offset = 1, [Range(1,100)]int limit=3)
+        public ActionResult<IEnumerable<UserForList>> Users([Range(0, int.MaxValue)] int offset = 1, [Range(1, 100)] int limit = 3)
         {
-           // _logger.LogInformation("Getting users with offset={offset} and limit={limit}",offset,limit);
-            return Ok(_userService.GetAll(offset,limit));
+            _logger.LogInformation("Getting users with offset={offset} and limit={limit}", offset, limit);
+            return Ok(_userService.GetAll(offset, limit));
         }
 
         [HttpGet]
         [Route("{userId}")]
-        public async Task<ActionResult<UserForList>> GetUserById([Required]int userId)
+        public async Task<ActionResult<UserForList>> GetUserById([Required] int userId)
         {
-            var user= await _userService.GetById(userId);
+            var user = await _userService.GetById(userId);
 
-            if(user == null)
+            if (user == null)
             {
                 _logger.LogWarning("Cannot find the user with id {userId}", userId);
-                return NotFound(); 
+                return NotFound();
             }
 
             return Ok(user);
@@ -46,10 +43,10 @@ namespace WebApp.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<UserForList>> CreateUser([Required] [FromForm] string name)
+        public async Task<ActionResult<UserForList>> CreateUser([Required][FromForm] string name)
         {
             var createdUser = await _userService.CreateUser(name);
-            return Ok(createdUser); 
+            return Ok(createdUser);
         }
 
         [HttpPatch]
@@ -59,14 +56,14 @@ namespace WebApp.Controllers
              [Required][FromRoute] int userId,
              [Required][FromForm] string name)
         {
-           var existingUser=await _userService.GetById(userId);
+            var existingUser = await _userService.GetById(userId);
             if (existingUser == null)
             {
                 return NotFound();
             }
-           var modifiedUSer=await _userService.ModifyUser(userId, name);
 
-           return Ok(modifiedUSer);
+            var modifiedUSer = await _userService.ModifyUser(userId, name);
+            return Ok(modifiedUSer);
         }
 
         [HttpDelete]
@@ -74,16 +71,14 @@ namespace WebApp.Controllers
 
         public async Task<ActionResult<UserForList>> DeleteUser([Required][FromRoute] int userId)
         {
-            var existingUser=await _userService.GetById(userId);
+            var existingUser = await _userService.GetById(userId);
             if (existingUser == null)
             {
                 return NotFound();
             }
 
             await _userService.DeleteUser(userId);
-
             return NoContent();
-
         }
     }
 }

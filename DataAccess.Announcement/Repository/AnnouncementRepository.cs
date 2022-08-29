@@ -9,32 +9,26 @@ namespace DataAccess.Announcement.Repository
         {
             throw new NotImplementedException();
         }
-
         public bool Delete(int id)
         {
             throw new NotImplementedException();
         }
-
         public IEnumerable<Ad> FindById(int id)
         {
             throw new NotImplementedException();
         }
-
         public IEnumerable<Ad> FindByName(string name)
         {
             throw new NotImplementedException();
         }
-
         public Ad Get()
         {
             throw new NotImplementedException();
         }
-
         public IEnumerable<Ad> GetAll(int offset, int limit)
         {
             throw new NotImplementedException();
         }
-
         public Ad Update(Ad element)
         {
             throw new NotImplementedException();

@@ -14,10 +14,10 @@ namespace Business.Users.Services
             _userRepository = userRepository;
         }
 
-        public async  Task<UserForList> CreateUser(string name)
+        public async Task<UserForList> CreateUser(string name)
         {
             var user = new User() { Name = name };
-            var addedUser= await _userRepository.Add(user);
+            var addedUser = await _userRepository.Add(user);
             return new UserForList(addedUser);
         }
 
@@ -44,14 +44,14 @@ namespace Business.Users.Services
 
         public async Task<UserForList> ModifyUser(int userId, string name)
         {
-            var user = await  _userRepository.FindById(userId);
+            var user = await _userRepository.FindById(userId);
             if (user == null)
             {
                 throw new InvalidOperationException("User was not found");
             }
 
             user.Name = name;
-            var updatedUser= await _userRepository.Update(user);
+            var updatedUser = await _userRepository.Update(user);
             return new UserForList(updatedUser);
 
         }
