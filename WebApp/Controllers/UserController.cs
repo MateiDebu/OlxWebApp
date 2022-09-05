@@ -62,8 +62,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var modifiedUSer = await _userService.ModifyUser(userId, name);
-            return Ok(modifiedUSer);
+            var modifiedUser = await _userService.ModifyUser(userId, name);
+            return Ok(modifiedUser);
         }
 
         [HttpDelete]

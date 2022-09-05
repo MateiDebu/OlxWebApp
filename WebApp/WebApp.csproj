@@ -15,8 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business.Annoucement\Business.Annoucement.csproj" />
     <ProjectReference Include="..\Business.Users\Business.Users.csproj" />
     <ProjectReference Include="..\ClassLibrary1\Core.csproj" />
+    <ProjectReference Include="..\DataAccess.Announcement\DataAccess.Announcement.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,7 +18,11 @@ namespace Business.Users.Services
         {
             var user = new User() { Name = name };
             var addedUser = await _userRepository.Add(user);
-            return new UserForList(addedUser);
+            return new UserForList()
+            {
+                Id = addedUser.Id,
+                Name = addedUser.Name,
+            };
         }
 
         public async Task DeleteUser(int userId)
@@ -39,7 +43,11 @@ namespace Business.Users.Services
         public async Task<UserForList?> GetById(int id)
         {
             var user = await _userRepository.FindById(id);
-            return user == null ? null : new UserForList(user);
+            return user == null ? null : new UserForList()
+            {
+                Id=user.Id,
+                Name = user.Name,
+            };
         }
 
         public async Task<UserForList> ModifyUser(int userId, string name)
@@ -52,7 +60,11 @@ namespace Business.Users.Services
 
             user.Name = name;
             var updatedUser = await _userRepository.Update(user);
-            return new UserForList(updatedUser);
+            return new UserForList()
+            {
+                Id=updatedUser.Id,
+                Name=updatedUser.Name,  
+            };
 
         }
     }

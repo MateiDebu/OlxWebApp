@@ -1,8 +1,11 @@
+using Business.Announcement.Services;
 using Business.Users.Services;
 using Core.Contracts;
 using Core.Repositories;
+using DataAccess.Announcement.Repository;
 using DataAccess.Database.Context;
 using DataAccess.Database.Models;
+using DataAccess.DataBase.Models;
 using DataAccess.Users.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +23,9 @@ builder.Services.AddDbContext<OlxContext>(options =>
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRepository<User>, UserRepository>();
+
+builder.Services.AddTransient<IAnnoucementService, AnnouncementService>();
+builder.Services.AddTransient<IRepository<Ad>, AnnouncementRepository>();
 
 var app = builder.Build();
 
