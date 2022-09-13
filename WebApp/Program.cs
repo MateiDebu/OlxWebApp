@@ -5,9 +5,11 @@ using Core.Repositories;
 using DataAccess.Announcement.Repository;
 using DataAccess.Database.Context;
 using DataAccess.Database.Models;
-using DataAccess.DataBase.Models;
 using DataAccess.Users.Repository;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +24,25 @@ builder.Services.AddDbContext<OlxContext>(options =>
       options.UseSqlServer(builder.Configuration.GetConnectionString("OlxApp")));
 
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IRepository<User>, UserRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
-builder.Services.AddTransient<IAnnoucementService, AnnouncementService>();
-builder.Services.AddTransient<IRepository<Ad>, AnnouncementRepository>();
+builder.Services.AddTransient<IAdsService,AdsService>();
+builder.Services.AddTransient<IAdRepository, AdsRepository>();
+
+builder.Services.AddIdentityCore<ApplicationUser>(options =>
+{
+    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireUppercase= false;
+    options.Password.RequireLowercase= false;
+})
+ .AddEntityFrameworkStores<OlxContext>()
+ .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions,BasicAuthenticationHandler>("BasicAuthentication",null);
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -46,6 +63,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

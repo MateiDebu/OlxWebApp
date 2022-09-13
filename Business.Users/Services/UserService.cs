@@ -2,21 +2,29 @@
 using Core.Models;
 using Core.Repositories;
 using DataAccess.Database.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Business.Users.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(IRepository<User> userRepository)
+        public UserService(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         public async Task<UserForList> CreateUser(string name)
         {
-            var user = new User() { Name = name };
+            var user = new ApplicationUser() { Name = name };
+            //var result=await _userManager.CreateAsync(user);
+            //if (!result.Succeeded)
+            //{
+            //    throw new InvalidOperationException($"User cannot be created because {result.Errors.First().Description}");
+            //}
             var addedUser = await _userRepository.Add(user);
             return new UserForList()
             {
@@ -27,7 +35,7 @@ namespace Business.Users.Services
 
         public async Task DeleteUser(int userId)
         {
-            await _userRepository.Delete(userId);
+           await _userRepository.Delete(userId);
         }
 
         public List<UserForList> GetAll(int offset, int limit)

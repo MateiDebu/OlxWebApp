@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\Core.csproj" />
+    <ProjectReference Include="..\DataAccess.Announcement\DataAccess.Announcement.csproj" />
     <ProjectReference Include="..\DataAccess.Model\DataAccess.Database.csproj" />
   </ItemGroup>
 

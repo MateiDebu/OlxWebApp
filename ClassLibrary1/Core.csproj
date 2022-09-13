@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Model\DataAccess.Database.csproj" />
+  </ItemGroup>
+
 </Project>

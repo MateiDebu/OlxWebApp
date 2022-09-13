@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Users.Repository
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IUserRepository
     {
         private readonly OlxContext _olxContext;
+
         public UserRepository(OlxContext olxContext)
         {
             _olxContext=olxContext;
         }
-        public async  Task<User> Add(User element)
+        public async  Task<ApplicationUser> Add(ApplicationUser element)
         {
             _olxContext.Users.Add(element);
            await _olxContext.SaveChangesAsync();
@@ -27,27 +28,19 @@ namespace DataAccess.Users.Repository
                 await _olxContext.SaveChangesAsync();
             }
         }
-        public IEnumerable<User> FindByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-        public User Get()
-        {
-            throw new NotImplementedException();
-        }
-        public IEnumerable<User> GetAll(int offset, int limit)
+        public IEnumerable<ApplicationUser> GetAll(int offset, int limit)
         {
             return _olxContext.Users.Skip(offset).Take(limit);
         }
-        public async Task<User> Update(User element)
+        public async Task<ApplicationUser> Update(ApplicationUser element)
         {
             _olxContext.Entry(element).State=EntityState.Modified;
             await _olxContext.SaveChangesAsync();
             return element;
         }
-        public async Task<User?>FindById(int id)
+        public async Task<ApplicationUser?>FindById(int id)
         {
-            return await _olxContext.FindAsync<User>(id);
+            return await _olxContext.FindAsync<ApplicationUser>(id);
         }
     }
 }
