@@ -27,11 +27,12 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+       
         public async Task<ActionResult<Ad>> CreateAd([Required][FromForm] string name, [Required][FromForm] string description)
         {
-            string userIdString = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            int userId=int.Parse(userIdString);
+            //string userIdString = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            //int userId=int.Parse(userIdString);
+            int userId = 1;
 
             var createdAd = await _adsService.CreateAd(userId,name,description);
             return Ok(new AdForList(createdAd));
