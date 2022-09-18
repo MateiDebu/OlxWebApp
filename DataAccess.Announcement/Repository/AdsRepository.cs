@@ -2,11 +2,6 @@
 using DataAccess.Database.Context;
 using DataAccess.Database.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Announcement.Repository
 {
@@ -33,9 +28,15 @@ namespace DataAccess.Announcement.Repository
             return ad;
         }
 
-        public Task DeleteAd(Ad ad)
+        public async Task DeleteAd(int id)
         {
-            throw new NotImplementedException();
+            var ad=await _olxContext.Announcements.FindAsync(id);
+
+            if (ad != null)
+            {
+                _olxContext.Announcements.Remove(ad);
+                await _olxContext.SaveChangesAsync();
+            }
         }
 
         public IEnumerable<Ad> GetAllAds(int offset, int limit)
@@ -53,9 +54,11 @@ namespace DataAccess.Announcement.Repository
             return await _olxContext.Announcements.Include(p=>p.User).SingleOrDefaultAsync(p=>p.Id==id);
         }
 
-        public Task<Ad> UpdateAd(Ad ad)
+        public async Task<Ad> UpdateAd(Ad ad)
         {
-            throw new NotImplementedException();
+            _olxContext.Entry(ad).State= EntityState.Modified;
+            await _olxContext.SaveChangesAsync();
+            return ad;
         }
     }
 }

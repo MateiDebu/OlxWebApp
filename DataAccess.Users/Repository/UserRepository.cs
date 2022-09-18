@@ -16,7 +16,7 @@ namespace DataAccess.Users.Repository
         public async  Task<ApplicationUser> Add(ApplicationUser element)
         {
             _olxContext.Users.Add(element);
-           await _olxContext.SaveChangesAsync();
+            await _olxContext.SaveChangesAsync();
             return element; 
         }
         public async Task Delete(int id)

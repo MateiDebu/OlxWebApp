@@ -25,7 +25,7 @@ namespace Business.Announcement.Services
             {
                 throw new InvalidOperationException("Ad not found");
             }
-            await _adRepository.DeleteAd(ad);
+            await _adRepository.DeleteAd(id);
         }
 
         public IEnumerable<Ad> GetAllAds(int offset, int limit)

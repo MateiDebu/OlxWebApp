@@ -26,17 +26,57 @@ namespace WebApp.Controllers
             return Ok(ads.Select(p=>new AdForList(p)));
         }
 
+        [HttpGet]
+        [Route("{adId}")]
+        public async Task<ActionResult<AdForList>> GetAdById([Required] int adId)
+        {
+            var ad = await _adsService.GetById(adId);
+            if (ad == null)
+            {
+                return NotFound();
+            }
+            return Ok(ad);
+        }
+
         [HttpPost]
-       
+        [Authorize]
         public async Task<ActionResult<Ad>> CreateAd([Required][FromForm] string name, [Required][FromForm] string description)
         {
-            //string userIdString = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            //int userId=int.Parse(userIdString);
-            int userId = 1;
+            string userIdString = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            int userId = int.Parse(userIdString);
 
             var createdAd = await _adsService.CreateAd(userId,name,description);
             return Ok(new AdForList(createdAd));
         }
 
+        [HttpDelete]
+
+        public async Task<ActionResult<AdForList>> DeleteAd([Required][FromForm] int adId)
+        {
+            var existingAd=await _adsService.GetById(adId);
+            if (existingAd == null)
+            {
+                return NotFound();
+            }
+
+            await _adsService.DeleteAd(adId);
+            return NoContent();
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult<AdForList>> ModifyUser(
+            [Required][FromForm] int id, 
+            [Required][FromForm] string name, 
+            [Required][FromForm] string description)
+        {
+            var existingAd=await _adsService.GetById(id);
+            if (existingAd == null)
+            {
+                return NotFound();
+            }
+
+            var modifiedAd=await _adsService.UpdateAd(id,name,description);
+            return Ok(modifiedAd);
+        }
     }
 }

@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Announcement", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Database", "DataAccess.Model\DataAccess.Database.csproj", "{E7BE59BA-26DB-4DB8-BE81-3AD1EECBC08A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Tests", "WebApp.Tests\WebApp.Tests.csproj", "{575D00E4-62C6-484D-9222-3855570DB1F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{E7BE59BA-26DB-4DB8-BE81-3AD1EECBC08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7BE59BA-26DB-4DB8-BE81-3AD1EECBC08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7BE59BA-26DB-4DB8-BE81-3AD1EECBC08A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{575D00E4-62C6-484D-9222-3855570DB1F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{575D00E4-62C6-484D-9222-3855570DB1F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{575D00E4-62C6-484D-9222-3855570DB1F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{575D00E4-62C6-484D-9222-3855570DB1F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{80E2C171-F16B-4164-99DE-2BFE569B452E} = {A8782109-601C-45B7-8169-39975B94525A}
 		{0CEE8310-147C-41A2-9B3D-EB934401178F} = {A8782109-601C-45B7-8169-39975B94525A}
 		{E7BE59BA-26DB-4DB8-BE81-3AD1EECBC08A} = {A8782109-601C-45B7-8169-39975B94525A}
+		{575D00E4-62C6-484D-9222-3855570DB1F5} = {B6D56DC7-F60E-4174-96E1-1A73C8068467}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {913842FA-C055-4457-9914-3EAF4D3C8710}

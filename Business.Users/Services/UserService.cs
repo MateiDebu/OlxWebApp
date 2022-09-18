@@ -17,14 +17,9 @@ namespace Business.Users.Services
             _userManager = userManager;
         }
 
-        public async Task<UserForList> CreateUser(string name)
+        public async Task<UserForList> CreateUser(string name,string username,string password)
         {
-            var user = new ApplicationUser() { Name = name };
-            //var result=await _userManager.CreateAsync(user);
-            //if (!result.Succeeded)
-            //{
-            //    throw new InvalidOperationException($"User cannot be created because {result.Errors.First().Description}");
-            //}
+            var user = new ApplicationUser() { Name = name, UserName=username,PasswordHash=password };
             var addedUser = await _userRepository.Add(user);
             return new UserForList()
             {
@@ -73,7 +68,6 @@ namespace Business.Users.Services
                 Id=updatedUser.Id,
                 Name=updatedUser.Name,  
             };
-
         }
     }
 }

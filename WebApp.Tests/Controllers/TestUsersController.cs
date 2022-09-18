@@ -1,7 +1,6 @@
 ﻿using Core.Contracts;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
@@ -77,11 +76,13 @@ namespace WebApp.Tests.Controllers
         {
             //Arrange
             string name = "name";
+            string username = "username";
+            string password="password";
             UserForList userForList = new UserForList() { Id=1,Name=name};
-            _userServiceMock.CreateUser(name).Returns(userForList);
+            _userServiceMock.CreateUser(name,username,password).Returns(userForList);
 
             //Act
-            var result=await _userController.CreateUser(name);
+            var result=await _userController.CreateUser(name,username, password);
 
             //Assert
             Assert.That(result, Is.Not.Null);
@@ -91,7 +92,7 @@ namespace WebApp.Tests.Controllers
 
             object resultValue = ((ObjectResult)result.Result).Value;
             Assert.That(resultValue, Is.SameAs(userForList));
-            await _userServiceMock.Received().CreateUser(name);
+            await _userServiceMock.Received().CreateUser(name, username, password);
         }
     }
 }

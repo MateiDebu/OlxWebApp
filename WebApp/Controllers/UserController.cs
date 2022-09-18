@@ -44,9 +44,9 @@ namespace WebApp.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<UserForList>> CreateUser([Required][FromForm] string name)
+        public async Task<ActionResult<UserForList>> CreateUser([Required][FromForm] string name, [Required][FromForm] string username, [Required][FromForm] string password)
         {
-            var createdUser = await _userService.CreateUser(name);
+            var createdUser = await _userService.CreateUser(name,username,password);
             return Ok(createdUser);
         }
 
