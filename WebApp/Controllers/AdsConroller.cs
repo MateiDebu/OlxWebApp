@@ -35,7 +35,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            return Ok(ad);
+            return Ok(new AdForList(ad));
         }
 
         [HttpPost]
@@ -76,7 +76,7 @@ namespace WebApp.Controllers
             }
 
             var modifiedAd=await _adsService.UpdateAd(id,name,description);
-            return Ok(modifiedAd);
+            return Ok(new AdForList(modifiedAd));
         }
     }
 }

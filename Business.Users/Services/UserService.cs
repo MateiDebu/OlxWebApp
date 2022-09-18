@@ -19,12 +19,19 @@ namespace Business.Users.Services
 
         public async Task<UserForList> CreateUser(string name,string username,string password)
         {
-            var user = new ApplicationUser() { Name = name, UserName=username,PasswordHash=password };
-            var addedUser = await _userRepository.Add(user);
+            var user = new ApplicationUser() { Name = name, UserName=username};
+            var result = await _userManager.CreateAsync(user, password);
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(
+                    $"User cannot be created because {result.Errors.First().Description}");
+            }
+
             return new UserForList()
             {
-                Id = addedUser.Id,
-                Name = addedUser.Name,
+                Id = user.Id,
+                Name = user.Name
             };
         }
 
