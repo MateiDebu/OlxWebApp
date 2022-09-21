@@ -20,10 +20,22 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Ad>> GetAllAds([Range(0,int.MaxValue)] int offset=0, [Range(0,100)] int limit=20)
+        public ActionResult<IEnumerable<Ad>> GetAllAds([Range(0,int.MaxValue)] int offset=0, [Range(0,100)] int limit=10)
         {
             var ads=_adsService.GetAllAds(offset,limit);
-            return Ok(ads.Select(p=>new AdForList(p)));
+            return Ok(ads.Select(a=>new AdForList(a)));
+        }
+
+        [HttpGet]
+        [Route("userId")]
+        [Authorize]
+        public ActionResult<IEnumerable<Ad>> GetAllAdsForUser([Range(0, int.MaxValue)] int offset = 0, [Range(0, 100)] int limit = 5)
+        {
+            string userIdString=User.Claims.First(c=>c.Type==ClaimTypes.NameIdentifier).Value;
+            int userId=int.Parse(userIdString);
+
+            var ads = _adsService.GetAllAdsForUser(userId, offset, limit);
+            return Ok(ads.Select(a=>new AdForList(a)));
         }
 
         [HttpGet]
@@ -50,7 +62,7 @@ namespace WebApp.Controllers
         }
 
         [HttpDelete]
-
+        [Authorize]
         public async Task<ActionResult<AdForList>> DeleteAd([Required][FromForm] int adId)
         {
             var existingAd=await _adsService.GetById(adId);
@@ -58,12 +70,12 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
             await _adsService.DeleteAd(adId);
             return NoContent();
         }
 
         [HttpPatch]
+        [Authorize]
         public async Task<ActionResult<AdForList>> ModifyUser(
             [Required][FromForm] int id, 
             [Required][FromForm] string name, 

@@ -1,6 +1,5 @@
 ﻿using Core.Contracts;
 using Core.Models;
-using DataAccess.Users.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 

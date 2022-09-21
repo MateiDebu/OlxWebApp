@@ -31,15 +31,14 @@ namespace Business.Users.Services
             return new UserForList()
             {
                 Id = user.Id,
-                Name = user.Name
+                Name = user.Name,
+                UserName=user.UserName,
             };
         }
-
         public async Task DeleteUser(int userId)
         {
            await _userRepository.Delete(userId);
         }
-
         public List<UserForList> GetAll(int offset, int limit)
         {
             var listOfUsers = _userRepository.GetAll(offset, limit);
@@ -47,9 +46,9 @@ namespace Business.Users.Services
             {
                 Id = element.Id,
                 Name = element.Name,
+                UserName = element.UserName,
             }).ToList();
         }
-
         public async Task<UserForList?> GetById(int id)
         {
             var user = await _userRepository.FindById(id);
@@ -57,9 +56,9 @@ namespace Business.Users.Services
             {
                 Id=user.Id,
                 Name = user.Name,
+                UserName = user.UserName
             };
         }
-
         public async Task<UserForList> ModifyUser(int userId, string name)
         {
             var user = await _userRepository.FindById(userId);
@@ -74,6 +73,7 @@ namespace Business.Users.Services
             {
                 Id=updatedUser.Id,
                 Name=updatedUser.Name,  
+                UserName=updatedUser.UserName
             };
         }
     }

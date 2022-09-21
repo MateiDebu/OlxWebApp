@@ -13,7 +13,6 @@ namespace DataAccess.Announcement.Repository
         {
             _olxContext = olxContext;
         }
-
         public async Task<Ad> CreateAd(int userId, string name, string description)
         {
             Ad ad = new Ad
@@ -27,7 +26,6 @@ namespace DataAccess.Announcement.Repository
             await _olxContext.SaveChangesAsync();
             return ad;
         }
-
         public async Task DeleteAd(int id)
         {
             var ad=await _olxContext.Announcements.FindAsync(id);
@@ -38,22 +36,18 @@ namespace DataAccess.Announcement.Repository
                 await _olxContext.SaveChangesAsync();
             }
         }
-
         public IEnumerable<Ad> GetAllAds(int offset, int limit)
         {
             return _olxContext.Announcements.Include(p=>p.User).Skip(offset).Take(limit);
         }
-
         public IEnumerable<Ad> GetAllAdsForUser(int userId, int offset, int limit)
         {
             return _olxContext.Announcements.Include(p => p.User).Where(ad => ad.UserId == userId).Skip(offset).Take(limit);
         }
-
         public async Task<Ad?> GetById(int id)
         {
             return await _olxContext.Announcements.Include(p=>p.User).SingleOrDefaultAsync(p=>p.Id==id);
         }
-
         public async Task<Ad> UpdateAd(Ad ad)
         {
             _olxContext.Entry(ad).State= EntityState.Modified;
