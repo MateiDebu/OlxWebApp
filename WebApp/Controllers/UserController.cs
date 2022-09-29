@@ -28,7 +28,7 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("{userId}")]
-        public async Task<ActionResult<UserForList>> GetUserById([Required] int userId)
+        public async Task<ActionResult<UserForList>> GetUserById([Required][FromRoute] int userId)
         {
             var user = await _userService.GetById(userId);
 

@@ -41,7 +41,6 @@ namespace DataAccess.Users.Tests.Repository
             var dbUser = _olxContext.Users.First();
             Assert.That(addedUser,Is.SameAs(dbUser));
         }
-
         [Test]
         public async Task UserRepository_FindById_UserFound_ReturnUser()
         {
@@ -71,6 +70,31 @@ namespace DataAccess.Users.Tests.Repository
         }
 
         [Test]
+        public void UserRepository_GetAll_UsersFound_ReturnUsers()
+        {
+            //Arrange
+            string name1 = "name1";
+            string username1 = "username1";
+            var appUser1 = new ApplicationUser() { Name = name1, UserName = username1 };
+            string name2 = "name2";
+            string username2 = "username2";
+            var appUser2 = new ApplicationUser() { Name = name2, UserName = username2 };
+            _olxContext.Users.Add(appUser1);
+            _olxContext.Users.Add(appUser2);
+            _olxContext.SaveChangesAsync();
+
+            //Act
+            var result = _userRepository.GetAll(0, 2);
+            var resultList = result.ToList();
+            //Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(resultList[0].Name, Is.EqualTo(name1));
+            Assert.That(resultList[0].UserName, Is.EqualTo(username1));
+            Assert.That(resultList[1].Name, Is.EqualTo(name2));
+            Assert.That(resultList[1].UserName, Is.EqualTo(username2));
+        }
+
+        [Test]
         public async Task UserRepository_Delete_UserFound_UserIsDeleted()
         {
             //Arrange
@@ -92,6 +116,25 @@ namespace DataAccess.Users.Tests.Repository
         {
             //Act & assert
             Assert.That(()=>_userRepository.Delete(101), Throws.Nothing);
+        }
+
+        [Test]
+        public async Task UserRepository_Update_UserFound_UserIsModified()
+        {
+            //Arrange
+            string name = "name";
+            string username = "username";
+            var updateUser = new ApplicationUser() { Name = name, UserName = username };
+            _olxContext.Users.Add(updateUser);
+            await _olxContext.SaveChangesAsync();
+
+            //Act
+            var modifiedUser = await _userRepository.Update(updateUser);
+
+            //Assert
+            Assert.That(modifiedUser, Is.Not.Null);
+            Assert.That(modifiedUser.Name, Is.EqualTo(name));
+            Assert.That(modifiedUser.UserName, Is.EqualTo(username));
         }
     }
 }
